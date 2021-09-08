@@ -1,4 +1,4 @@
-package com.inflearn.domain;
+package com.inflearn.member.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -16,20 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class MemberTest {
 
   private static final String email = "hi@email.com";
-  private static final String password = "password";
+  private static final String password = "1q2w3e4r@T";
   private Member member;
-
-  /*
-   * - 회원으로 등록할 수 있다.
-   *     - 회원으로 등록할 때는 이메일과 비밀번호가 필요하다.
-   *     - 이메일이 없으면 회원으로 등록할 수 없다.
-   *     - 이메일은 인증이 가능한 이메일이어야 한다. (등록시에는 검증하지 않으나, 결제 등의 행위 시에 검증을 하게됨!!)
-   *     - 이미 등록 된 이메일로는 회원가입할 수 없다.
-   * - 회원은 지식공유자로 등록할 수 있다.
-   * - 회원 프로필을 변경할 수 있다. PATCH
-   *     - 비밀번호를 변경할 수 있다.
-   * - 회원 프로필을 조회할 수 있다.
-   */
 
   @DisplayName("회원으로 등록할 수 있다.")
   @Test
@@ -58,10 +45,14 @@ public class MemberTest {
         .isThrownBy(throwingCallable);
   }
 
-  @DisplayName("이미 등록된 이메일로는 회원가입할 수 없다.")
+  @DisplayName("게스트는 회원으로 등록할 수 있다.")
   @Test
-  void create_() {
-    // 고민할 요소 : 외부에서 Validator를 주입받아서 사용하는 방법의 장점
+  void register_student() {
+    member = new Member(email, password);
+
+    Member expected = member.registerStudent();
+
+    assertThat(expected.isStudent()).isTrue();
   }
 
   @DisplayName("회원은 지식공유자로 등록할 수 있다.")
@@ -91,7 +82,7 @@ public class MemberTest {
   void change_profile() {
     // given
     member = new Member(email, password, MemberRole.STUDENT);
-    String password = "비밀번호";
+    String password = "1q2w3e4r#A";
     MemberProfile profile = new MemberProfile(password);
 
     // when
