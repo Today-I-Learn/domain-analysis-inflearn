@@ -1,16 +1,16 @@
-package com.inflearn.domain;
+package com.inflearn.member.domain;
 
-import static com.inflearn.domain.MemberRole.*;
+import static com.inflearn.member.domain.MemberRole.*;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.Getter;
-import org.springframework.util.StringUtils;
 
-@EqualsAndHashCode
 @Getter
 public class Member {
+  private final UUID id = UUID.randomUUID();
   private final Email email;
-  private final String password;
+  private final Password password;
   private final MemberRole role;
 
   public Member(String email, String password) {
@@ -24,21 +24,13 @@ public class Member {
   }
 
   public Member(String email, String password, MemberRole role) {
-    this(new Email(email), password, role);
+    this(new Email(email), new Password(password), role);
   }
 
-  public Member(Email email, String password, MemberRole role) {
-    verify(password);
+  public Member(Email email, Password password, MemberRole role) {
     this.email = email;
     this.password = password;
     this.role = role;
-  }
-
-
-  private void verify(String password) {
-    if (!StringUtils.hasText(password)) {
-      throw new IllegalArgumentException("비밀번호는 필수값입니다.");
-    }
   }
 
   public boolean isInstructor() {
@@ -60,7 +52,33 @@ public class Member {
     return new Member(this.email, this.password, INSTRUCTOR);
   }
 
+  public Member registerStudent() {
+    if(!this.isGuest()){
+      throw new IllegalStateException("게스트만 사용자로 등록 가능");
+    }
+    return new Member(this.email, this.password, STUDENT);
+  }
+
   public Member updateProfile(MemberProfile profile) {
     return new Member(this, profile);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Member member = (Member) o;
+    return Objects.equals(id, member.id) || (Objects.equals(email, member.email)
+        && Objects.equals(password, member.password)
+        && role == member.role);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(email, password, role);
   }
 }
