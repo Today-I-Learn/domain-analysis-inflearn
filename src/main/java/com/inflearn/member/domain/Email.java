@@ -1,11 +1,10 @@
-package com.inflearn.domain;
+package com.inflearn.member.domain;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.EqualsAndHashCode;
 import org.springframework.util.StringUtils;
 
-@EqualsAndHashCode
 public final class Email {
   // 참고: 이펙티브 자바 6장
   private static final Pattern pattern = Pattern.compile("^(.+)@(.+)$");
@@ -27,5 +26,20 @@ public final class Email {
     }
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Email email1 = (Email) o;
+    return Objects.equals(email, email1.email);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(email);
+  }
 }
