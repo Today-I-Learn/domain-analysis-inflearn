@@ -1,6 +1,5 @@
 package com.inflearn.lecture.domain;
 
-import com.inflearn.lecture.domain.Lecture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,6 @@ public class LectureTest {
   */
 
   @DisplayName("강의를 생성할 수 있다.")
-
   @Test
   void create() {
     // 강의 식별자, 제목, 가격(값객체), 카테고리(이넘^^), 난이도(이넘^^),
