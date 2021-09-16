@@ -1,44 +1,41 @@
 package com.inflearn.lecture.domain;
 
 import com.inflearn.member.domain.Member;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
+@Entity
 public class Lecture {
   // 강의 식별자, 제목, 가격, 카테고리, 난이도, Section -> Chapter, 태그, 소개, 지식공유자,
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  private final UUID id = UUID.randomUUID();
   private String title;
+
+  @OneToOne
   private Member instructor;
-  private Price price;
+
+  @OneToOne
   private Category category;
+
+  @Embedded
+  private Price price;
+
+  @Enumerated(EnumType.STRING)
   private Level level;
+
   private String introduce;
+  // Tag, Review, Member(지식공유자)는 ID를 참조하는 형태로 설계 lifecycle이 다르다
+
+  // TODO: 2021/09/16 mappedBy, joinColumn 설정해야함
+  @OneToMany
   private List<Chapter> chapters = new ArrayList<>();
-  private List<Tag> tags = new ArrayList<>();
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Lecture lecture = (Lecture) o;
-    return Objects.equals(id, lecture.id) || (Objects.equals(title, lecture.title)
-        && Objects.equals(instructor, lecture.instructor)
-        && Objects.equals(price, lecture.price)
-        && Objects.equals(category, lecture.category)
-        && level == lecture.level
-        && Objects.equals(introduce, lecture.introduce)
-        && Objects.equals(tags, lecture.tags));
-  }
+  @OneToMany
+  private List<Tag> tags = new ArrayList<>(); // id
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(title, instructor, price, category, level, introduce, tags);
-  }
+
 }

@@ -1,37 +1,50 @@
 package com.inflearn.lecture.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import java.time.Instant;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.Duration;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chapter {
 
-    private final UUID id = UUID.randomUUID();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final String title;
+    private String title;
 
     @Nullable
-    private final String video;
+    private String video;
 
     @Nullable
-    private final String document;
+    private String document;
 
-    // TODO: 2021/09/13 어떤걸로 할까요? 리서치좀..
-    private final Instant playTime;
+    private Duration playTime;
 
     private boolean displayed = false;
 
-    public Chapter(String title, String video, String document, Instant playTime) {
-        this(title, video, document, playTime, false);
+    public Chapter(String title, String video, String document, Duration playTime) {
+        this(null, title, video, document, playTime, false);
     }
 
-    public Chapter(String title, String video, String document, Instant playTime, boolean displayed) {
+    public Chapter(String title, String video, String document, Duration playTime, boolean displayed) {
+        this(null, title, video, document, playTime, displayed);
+    }
+
+    public Chapter(Long id, String title, String video, String document, Duration playTime, boolean displayed) {
         verify(title);
+        this.id = id;
         this.title = title;
         this.video = video;
         this.document = document;
@@ -39,39 +52,11 @@ public class Chapter {
         this.displayed = displayed;
     }
 
-    public static class ChapterBuilder {
-        public ChapterBuilder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public ChapterBuilder video(String video) {
-            this.video = video;
-            return this;
-        }
-
-        public ChapterBuilder document(String document) {
-            this.document = document;
-            return this;
-        }
-
-        public ChapterBuilder playTime(Instant playTime) {
-            this.playTime = playTime;
-            return this;
-        }
-
-        public ChapterBuilder displayed(boolean displayed) {
-            this.displayed = displayed;
-            return this;
-        }
-    }
-
     private void verify(String title) {
-        if(!StringUtils.hasText(title)) {
+        if (!StringUtils.hasText(title)) {
             throw new IllegalArgumentException("비어있는 타이틀 불가 by 09학번");
         }
     }
-
 
     @Override
     public boolean equals(Object o) {

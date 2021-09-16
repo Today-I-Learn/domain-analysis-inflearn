@@ -1,21 +1,28 @@
 package com.inflearn.lecture.domain;
 
-import org.springframework.lang.Nullable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.*;
 
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
-  private final UUID id = UUID.randomUUID();
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  @Nullable
-  private final Category root;
+  @OneToOne
+  private Category root;
 
   @NotBlank
-  private final String name;
+  private String name;
 
+  @OneToMany
   private List<Category> subCategories = new ArrayList<>();
 
   public Category(String name) {
