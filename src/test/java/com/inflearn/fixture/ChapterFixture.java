@@ -5,12 +5,12 @@ import com.inflearn.lecture.domain.Chapter;
 import java.time.Duration;
 
 public class ChapterFixture {
-    private static final Long ID = 1L;
-    private static final String TITLE = "lombok";
-    private static final String VIDEO = "http://project.lombok.org";
-    private static final String DOCUMENT = "http://project.lombok.org/reference.pdf";
-    private static final Duration TIME = Duration.ZERO;
-    private static boolean DISPLAYED = false;
+    public static final Long ID = 1L;
+    public static final String TITLE = "lombok";
+    public static final String VIDEO = "http://project.lombok.org";
+    public static final String DOCUMENT = "http://project.lombok.org/reference.pdf";
+    public static final Duration PLAY_TIME = Duration.ZERO;
+    public static boolean DISPLAYED = false;
 
     public static Chapter 챕터() {
         return Chapter.builder()
@@ -18,7 +18,7 @@ public class ChapterFixture {
                 .title(TITLE)
                 .video(VIDEO)
                 .document(DOCUMENT)
-                .playTime(TIME)
+                .playTime(PLAY_TIME)
                 .build();
     }
 
@@ -27,7 +27,7 @@ public class ChapterFixture {
                 .id(ID)
                 .video(VIDEO)
                 .document(DOCUMENT)
-                .playTime(TIME)
+                .playTime(PLAY_TIME)
                 .build();
     }
 }
