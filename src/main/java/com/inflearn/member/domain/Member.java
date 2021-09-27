@@ -1,13 +1,11 @@
 package com.inflearn.member.domain;
 
-import static com.inflearn.member.domain.MemberRole.*;
-
-import java.util.Objects;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import static com.inflearn.member.domain.MemberRole.*;
 
 @Getter
 @NoArgsConstructor
