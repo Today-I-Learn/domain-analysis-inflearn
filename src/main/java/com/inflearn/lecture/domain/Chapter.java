@@ -2,6 +2,7 @@ package com.inflearn.lecture.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
@@ -11,10 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.Duration;
-import java.util.Objects;
 
 @Entity
 @Builder
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chapter {
 
@@ -33,6 +34,10 @@ public class Chapter {
     private Duration playTime;
 
     private boolean displayed = false;
+
+    public Chapter(String title, String video, String document) {
+        this(null, title, video, document, Duration.ZERO, false);
+    }
 
     public Chapter(String title, String video, String document, Duration playTime) {
         this(null, title, video, document, playTime, false);
@@ -58,21 +63,4 @@ public class Chapter {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Chapter chapter = (Chapter) o;
-        return Objects.equals(id, chapter.id)
-                || (displayed == chapter.displayed
-                && Objects.equals(title, chapter.title)
-                && Objects.equals(video, chapter.video)
-                && Objects.equals(document, chapter.document)
-                && Objects.equals(playTime, chapter.playTime));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, video, document, playTime, displayed);
-    }
 }
