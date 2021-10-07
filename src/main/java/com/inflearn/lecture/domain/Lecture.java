@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Entity
@@ -41,10 +42,10 @@ public class Lecture {
   private Approval approved;
 
   // TODO: 2021/09/16 mappedBy, joinColumn 설정해야함
-  @OneToMany
+  @OneToMany(cascade = CascadeType.PERSIST)
   private List<Chapter> chapters = new ArrayList<>();
 
-  @OneToMany
+  @ManyToMany
   private List<Tag> tags = new ArrayList<>();
 
   public void approve() {
@@ -65,5 +66,26 @@ public class Lecture {
     this.approved = approved;
     this.chapters = chapters;
     this.tags = tags;
+  }
+
+  public void addChapter(Chapter chapter) {
+    this.chapters.add(chapter);
+  }
+
+  public void removeChapter(Chapter chapter) {
+    this.chapters.stream()
+            .filter(c -> c.isActive()) // 조회할때 걸어줘야하는
+            .filter(c -> Objects.equals(chapter.getId(), c.getId()))
+            .findAny()
+            .orElseThrow(IllegalArgumentException::new)
+            .remove();
+  }
+
+  public void update(final Lecture lecture) {
+    this.title = lecture.title;
+    this.category = lecture.category;
+    this.price = lecture.price;
+    this.level = lecture.level;
+    this.introduce = lecture.introduce;
   }
 }

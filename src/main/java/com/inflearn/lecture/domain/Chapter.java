@@ -33,28 +33,31 @@ public class Chapter {
 
     private Duration playTime;
 
-    private boolean displayed = false;
+    private boolean preview = false; // 미리보기 제공 여부
+
+    private boolean active = true; // 활성 여부 (false 시 삭제됨)
 
     public Chapter(String title, String video, String document) {
-        this(null, title, video, document, Duration.ZERO, false);
+        this(null, title, video, document, Duration.ZERO, false, true);
     }
 
     public Chapter(String title, String video, String document, Duration playTime) {
-        this(null, title, video, document, playTime, false);
+        this(null, title, video, document, playTime, false, true);
     }
 
-    public Chapter(String title, String video, String document, Duration playTime, boolean displayed) {
-        this(null, title, video, document, playTime, displayed);
+    public Chapter(String title, String video, String document, Duration playTime, boolean preview) {
+        this(null, title, video, document, playTime, preview, true);
     }
 
-    public Chapter(Long id, String title, String video, String document, Duration playTime, boolean displayed) {
+    public Chapter(Long id, String title, String video, String document, Duration playTime, boolean preview, boolean active) {
         verify(title);
         this.id = id;
         this.title = title;
         this.video = video;
         this.document = document;
         this.playTime = playTime;
-        this.displayed = displayed;
+        this.preview = preview;
+        this.active = active;
     }
 
     private void verify(String title) {
@@ -63,4 +66,15 @@ public class Chapter {
         }
     }
 
+    public void remove() {
+        this.active = false;
+    }
+
+    public void update(final Chapter chapter) {
+        this.title = chapter.title;
+        this.video = chapter.video;
+        this.document = chapter.document;
+        this.playTime = chapter.playTime;
+        this.preview = chapter.preview;
+    }
 }
