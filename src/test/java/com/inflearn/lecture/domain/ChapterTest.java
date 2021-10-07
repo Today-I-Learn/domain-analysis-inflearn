@@ -33,4 +33,19 @@ public class ChapterTest {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(throwingCallable);
     }
+
+    @DisplayName("수정 될 수 있다")
+    @Test
+    void update() {
+        Chapter chapter = ChapterFixture.챕터();
+        chapter.update(ChapterFixture.변경된_챕터());
+
+        assertAll(
+                () -> assertThat(chapter.getTitle()).isEqualTo(ChapterFixture.CHANGED_TITLE),
+                () -> assertThat(chapter.getVideo()).isEqualTo(ChapterFixture.CHANGED_VIDEO),
+                () -> assertThat(chapter.getDocument()).isEqualTo(ChapterFixture.CHANGED_DOCUMENT),
+                () -> assertThat(chapter.getPlayTime()).isEqualTo(ChapterFixture.CHANGED_PLAY_TIME)
+        );
+    }
+
 }
