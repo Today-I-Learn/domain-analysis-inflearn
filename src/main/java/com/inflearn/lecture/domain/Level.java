@@ -1,5 +1,8 @@
 package com.inflearn.lecture.domain;
 
-public enum Level {
+import javax.persistence.Embeddable;
 
+@Embeddable
+public enum Level {
+    EASY, MEDIUM, HARD;
 }

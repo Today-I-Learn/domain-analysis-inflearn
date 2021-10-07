@@ -2,10 +2,14 @@ package com.inflearn.lecture.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import lombok.EqualsAndHashCode;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Price {
-  private final BigDecimal value;
+  private BigDecimal value;
+
+  protected Price() {}
 
   public Price(int value) {
     this(BigDecimal.valueOf(value));

@@ -1,17 +1,28 @@
 package com.inflearn.member.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
 import static com.inflearn.member.domain.MemberRole.*;
 
-import java.util.Objects;
-import java.util.UUID;
-import lombok.Getter;
-
 @Getter
+@NoArgsConstructor
+@Entity
 public class Member {
-  private final UUID id = UUID.randomUUID();
-  private final Email email;
-  private final Password password;
-  private final MemberRole role;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Embedded
+  private Email email;
+
+  @Embedded
+  private Password password;
+
+  @Enumerated(EnumType.STRING)
+  private MemberRole role;
 
   public Member(String email, String password) {
     this(email, password, GUEST);
@@ -61,24 +72,5 @@ public class Member {
 
   public Member updateProfile(MemberProfile profile) {
     return new Member(this, profile);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Member member = (Member) o;
-    return Objects.equals(id, member.id) || (Objects.equals(email, member.email)
-        && Objects.equals(password, member.password)
-        && role == member.role);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(email, password, role);
   }
 }

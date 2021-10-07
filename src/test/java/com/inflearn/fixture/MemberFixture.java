@@ -5,19 +5,19 @@ import com.inflearn.member.domain.MemberRole;
 
 public class MemberFixture {
 
-  private static final String email = "hi@email.com";
-  private static final String password = "1q2w3e4r@T";
+  private static final String EMAIL = "hi@email.com";
+  private static final String PASSWORD = "1q2w3e4r@T";
 
   public static Member 게스트() {
-    return new Member(email, password, MemberRole.GUEST);
+    return new Member(EMAIL, PASSWORD, MemberRole.GUEST);
   }
 
   public static Member 회원() {
-    return new Member(email, password, MemberRole.STUDENT);
+    return new Member(EMAIL, PASSWORD, MemberRole.STUDENT);
   }
 
   public static Member 지식공유자() {
-    return new Member(email, password, MemberRole.INSTRUCTOR);
+    return new Member(EMAIL, PASSWORD, MemberRole.INSTRUCTOR);
   }
 
 

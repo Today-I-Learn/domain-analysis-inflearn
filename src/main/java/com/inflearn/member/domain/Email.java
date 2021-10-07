@@ -5,11 +5,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public final class Email {
   // 참고: 이펙티브 자바 6장
   private static final Pattern pattern = Pattern.compile("^(.+)@(.+)$");
 
-  private final String email;
+  private String email;
+
+  protected Email() {}
 
   Email(String email) {
     verify(email);
