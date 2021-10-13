@@ -9,6 +9,7 @@ public class NoticeFixture {
 
     public static Notice 강의_공지글_active() {
         return Notice.builder()
+                .instructor(MemberFixture.지식공유자())
                 .title(TITLE)
                 .content(CONTENT)
                 .active(true)

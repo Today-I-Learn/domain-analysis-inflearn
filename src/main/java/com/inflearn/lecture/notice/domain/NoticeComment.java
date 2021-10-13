@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class NoticeReply {
+public class NoticeComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class NoticeReply {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    public void update(NoticeReply noticeReply) {
-        this.content = noticeReply.content;
+    public void update(NoticeComment noticeComment) {
+        this.content = noticeComment.content;
     }
 
     public void remove() {

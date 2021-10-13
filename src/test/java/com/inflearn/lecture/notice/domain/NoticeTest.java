@@ -56,6 +56,14 @@ public class NoticeTest {
         );
     }
 
+/*    @DisplayName("좋아요 개수를 변경할 수 있다.")
+    @Test
+    public void updateLike() {
+        // given
+        Notice notice = NoticeFixture.강의_공지글_active();
+
+    }*/
+
     @DisplayName("삭제될 수 있다.")
     @Test
     public void delete() {
