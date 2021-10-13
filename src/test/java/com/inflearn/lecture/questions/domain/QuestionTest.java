@@ -1,8 +1,8 @@
 package com.inflearn.lecture.questions.domain;
 
-import com.inflearn.fixture.NoticeReplyFixture;
+import com.inflearn.fixture.NoticeCommentFixture;
 import com.inflearn.fixture.QuestionFixture;
-import com.inflearn.lecture.notice.domain.NoticeReply;
+import com.inflearn.lecture.notice.domain.NoticeComment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,33 +26,33 @@ class QuestionTest {
     @DisplayName("생성될 수 있다.")
     @Test
     public void create() {
-        Question lectureNoticeReply = QuestionFixture.강의_질문_active();
+        Question lectureNoticeComment = QuestionFixture.강의_질문_active();
 
-        assertThat(lectureNoticeReply.getContent()).isEqualTo(NoticeReplyFixture.CONTENT);
+        assertThat(lectureNoticeComment.getContent()).isEqualTo(QuestionFixture.CONTENT);
     }
 
     @DisplayName("수정될 수 있다.")
     @Test
     public void update() {
-        NoticeReply noticeReply = NoticeReplyFixture.강의_공지글_댓글_active();
+        NoticeComment noticeComment = NoticeCommentFixture.강의_공지글_댓글_active();
         final String content = "바꾼내용";
 
-        NoticeReply request = NoticeReply.builder()
+        NoticeComment request = NoticeComment.builder()
                 .content(content)
                 .build();
 
-        noticeReply.update(request);
+        noticeComment.update(request);
 
-        assertThat(noticeReply.getContent()).isEqualTo(content);
+        assertThat(noticeComment.getContent()).isEqualTo(content);
     }
 
     @DisplayName("삭제될 수 있다.")
     @Test
     public void delete() {
-        NoticeReply noticeReply = NoticeReplyFixture.강의_공지글_댓글_active();
+        NoticeComment noticeComment = NoticeCommentFixture.강의_공지글_댓글_active();
 
-        noticeReply.remove();
+        noticeComment.remove();
 
-        assertThat(noticeReply.isActive()).isFalse();
+        assertThat(noticeComment.isActive()).isFalse();
     }
 }

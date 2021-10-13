@@ -1,6 +1,5 @@
 package com.inflearn.lecture.questions.domain;
 
-import com.inflearn.lecture.domain.Lecture;
 import com.inflearn.member.domain.Member;
 import lombok.*;
 
@@ -9,32 +8,34 @@ import java.util.List;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
-public class Question {
+public class QuestionAnswer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
     private String content;
     private boolean active;
-
-    @Enumerated(EnumType.STRING)
-    private QuestionStatus questionStatus;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Lecture lecture;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(
-            name = "question_answer_id",
+            name = "question_comment_id",
             nullable = false,
             columnDefinition = "bigint(20)",
-            foreignKey = @ForeignKey(name = "fk_question_answer_to_questions")
+            foreignKey = @ForeignKey(name = "fk_question_comment_to_questions")
     )
-    private List<QuestionAnswer> questionAnswer;
+    private List<AnswerComment> comment;
+
+    public void update(QuestionAnswer questionAnswer) {
+        this.content = questionAnswer.content;
+    }
+
+    public void remove() {
+        this.active = false;
+    }
 }
