@@ -2,11 +2,17 @@ package com.inflearn.lecture.notice.domain;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.inflearn.fixture.LectureFixture;
+import com.inflearn.fixture.MemberFixture;
 import com.inflearn.fixture.NoticeFixture;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 /*
 ## 강의 공지글
 
@@ -36,6 +42,66 @@ public class NoticeTest {
         );
     }
 
+    @DisplayName("타이틀은 비어있을 수 없다.")
+    @NullAndEmptySource
+    @ParameterizedTest
+    void createFailByTitle(String title) {
+        ThrowableAssert.ThrowingCallable throwingException = () -> new Notice(title, "내용", LectureFixture.승인_완료된_강의(), MemberFixture.지식공유자());
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(throwingException);
+    }
+
+    @DisplayName("내용은 비어있을 수 없다.")
+    @NullAndEmptySource
+    @ParameterizedTest
+    void createFailByContent(String content) {
+        ThrowableAssert.ThrowingCallable throwingException = () -> new Notice("타이틀", content, LectureFixture.승인_완료된_강의(), MemberFixture.지식공유자());
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(throwingException);
+    }
+
+    @DisplayName("강의는 비어있을 수 없다.")
+    @Test
+    void createFailByLecture() {
+        ThrowableAssert.ThrowingCallable throwingException = () -> Notice.builder()
+                .title("제목")
+                .content("내용")
+                .instructor(MemberFixture.지식공유자())
+                .build();
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(throwingException);
+    }
+
+    @DisplayName("지식공유자는 비어있을 수 없다.")
+    @Test
+    void createFailByInstructor() {
+        ThrowableAssert.ThrowingCallable throwingException = () -> Notice.builder()
+                .title("제목")
+                .content("내용")
+                .lecture(LectureFixture.승인_완료된_강의())
+                .build();
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(throwingException);
+    }
+
+    @DisplayName("지식공유자만 공지 생성이 가능하다.")
+    @Test
+    void createFailByNonInstructor() {
+        ThrowableAssert.ThrowingCallable throwingException = () -> Notice.builder()
+                .title("제목")
+                .content("내용")
+                .lecture(LectureFixture.승인_완료된_강의())
+                .instructor(MemberFixture.회원())
+                .build();
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(throwingException);
+    }
+
     @DisplayName("수정될 수 있다.")
     @Test
     public void update() {
@@ -46,6 +112,8 @@ public class NoticeTest {
         Notice request = Notice.builder()
                 .title(title)
                 .content(content)
+                .lecture(LectureFixture.승인_완료된_강의())
+                .instructor(MemberFixture.지식공유자())
                 .build();
 
         notice.update(request);
@@ -55,14 +123,6 @@ public class NoticeTest {
                 () -> assertThat(notice.getContent()).isEqualTo(content)
         );
     }
-
-/*    @DisplayName("좋아요 개수를 변경할 수 있다.")
-    @Test
-    public void updateLike() {
-        // given
-        Notice notice = NoticeFixture.강의_공지글_active();
-
-    }*/
 
     @DisplayName("삭제될 수 있다.")
     @Test

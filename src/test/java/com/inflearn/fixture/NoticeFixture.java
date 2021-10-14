@@ -12,7 +12,8 @@ public class NoticeFixture {
                 .instructor(MemberFixture.지식공유자())
                 .title(TITLE)
                 .content(CONTENT)
-                .active(true)
+                .lecture(LectureFixture.승인_완료된_강의())
+                .instructor(MemberFixture.지식공유자())
                 .build();
     }
 }
