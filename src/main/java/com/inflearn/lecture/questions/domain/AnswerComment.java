@@ -18,6 +18,8 @@ public class AnswerComment {
     private String content;
     private boolean active;
 
+    private Long questionAnswerId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 

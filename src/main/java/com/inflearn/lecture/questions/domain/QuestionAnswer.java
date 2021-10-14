@@ -22,13 +22,8 @@ public class QuestionAnswer {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(
-            name = "question_comment_id",
-            nullable = false,
-            columnDefinition = "bigint(20)",
-            foreignKey = @ForeignKey(name = "fk_question_comment_to_questions")
-    )
+    @OneToMany
+    @JoinColumn(name = "question_answer_id")
     private List<AnswerComment> comment;
 
     public void update(QuestionAnswer questionAnswer) {
