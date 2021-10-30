@@ -47,4 +47,12 @@ public class WishList extends AbstractAggregateRoot<WishList> {
 
         lectures.remove(lecture);
     }
+
+    public void removeByEvent(Lecture lecture) {
+        if (!lectures.contains(lecture)) {
+            return;
+        }
+
+        lectures.remove(lecture);
+    }
 }
