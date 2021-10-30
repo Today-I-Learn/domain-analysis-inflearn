@@ -1,6 +1,7 @@
-package com.inflearn.discount.domain;
+package com.inflearn.lecture.discount.domain;
 
 import com.inflearn.common.domain.BaseEntity;
+import lombok.Builder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
@@ -8,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+@Builder
 @Entity
 public class Discount extends BaseEntity {
 
@@ -32,7 +35,12 @@ public class Discount extends BaseEntity {
     }
 
     public Discount(String title, int ratio, LocalDateTime startTime, LocalDateTime endTime) {
+        this(null, title, ratio, startTime, endTime);
+    }
+
+    private Discount(Long id, String title, int ratio, LocalDateTime startTime, LocalDateTime endTime) {
         verify(title, ratio, startTime, endTime);
+        this.id = id;
         this.title = title;
         this.ratio = ratio;
         this.startTime = startTime;
@@ -67,6 +75,22 @@ public class Discount extends BaseEntity {
         }
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public int getRatio() {
+        return ratio;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     public void update(final Discount discount) {
         this.title = discount.title;
         this.ratio = discount.ratio;
@@ -76,5 +100,18 @@ public class Discount extends BaseEntity {
 
     public void finish() {
         this.endTime = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Discount discount = (Discount) o;
+        return Objects.equals(id, discount.id) || ratio == discount.ratio && Objects.equals(title, discount.title) && Objects.equals(startTime, discount.startTime) && Objects.equals(endTime, discount.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, ratio, startTime, endTime);
     }
 }
