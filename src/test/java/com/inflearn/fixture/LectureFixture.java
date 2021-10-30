@@ -17,6 +17,12 @@ public class LectureFixture {
     public static final List<Chapter> CHAPTERS = new ArrayList<>(Arrays.asList(ChapterFixture.챕터()));
     public static final List<Tag> TAGS = new ArrayList<>();
 
+    public static Lecture ID_유효한_강의() {
+        return Lecture.builder()
+                .id(ID)
+                .build();
+    }
+
     public static Lecture 승인_대기중_강의() {
         return 강의(Approval.WAITING);
     }
