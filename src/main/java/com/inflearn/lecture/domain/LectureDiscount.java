@@ -1,6 +1,6 @@
 package com.inflearn.lecture.domain;
 
-import com.inflearn.discount.domain.Discount;
+import com.inflearn.lecture.discount.domain.Discount;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

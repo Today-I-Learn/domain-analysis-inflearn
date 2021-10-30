@@ -1,7 +1,7 @@
 //package com.inflearn.lecture.service;
 //
-//import com.inflearn.discount.domain.Discount;
-//import com.inflearn.discount.domain.DiscountRepository;
+//import com.inflearn.lecture.discount.domain.Discount;
+//import com.inflearn.lecture.discount.domain.DiscountRepository;
 //import com.inflearn.lecture.domain.Lecture;
 //import com.inflearn.lecture.dto.LectureResponse;
 //import lombok.RequiredArgsConstructor;
