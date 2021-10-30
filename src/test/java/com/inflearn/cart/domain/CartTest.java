@@ -31,6 +31,19 @@ class CartTest {
         assertThat(cart.getLectures()).isNotEmpty();
     }
 
+    @DisplayName("강의를 추가시 위시리스트에서 해당 강의를 삭제하는 이벤트를 발행한다.")
+    @Test
+    public void publishEventByAddLecture() {
+        // given
+        FakeCart cart = CartFixture.페이크_수강바구니();
+
+        // when
+        cart.add(LectureFixture.승인_완료된_강의());
+
+        // then
+        assertThat(cart.isRegist()).isTrue();
+    }
+
     @DisplayName("강의를 삭제할 수 있다.")
     @Test
     public void removeLecture() {

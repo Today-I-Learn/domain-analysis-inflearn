@@ -34,12 +34,24 @@ class WishListTest {
 
     @DisplayName("강의를 추가할 수 있다.")
     @Test
-    public void AddLecture() {
+    public void addLecture() {
         // when
         wishList.add(LectureFixture.승인_완료된_강의());
 
         // then
         assertThat(wishList.getLectures()).isNotEmpty();
+    }
+
+    @DisplayName("강의를 추가시 수강바구니에서 해당 강의를 삭제하는 이벤트를 발행한다.")
+    @Test
+    public void publishEventByAddLecture() {
+        // given
+        FakeWishList wishList = WishListFixture.페이크_위시리스트();
+        // when
+        wishList.add(LectureFixture.승인_완료된_강의());
+
+        // then
+        assertThat(wishList.isRegist()).isTrue();
     }
 
     @DisplayName("강의를 삭제할 수 있다.")
@@ -58,7 +70,7 @@ class WishListTest {
 
     @DisplayName("중복된 강의는 추가할 수 없다.")
     @Test
-    public void AddDuplicateLecture() {
+    public void addDuplicateLecture() {
         // given
         Lecture lecture = LectureFixture.ID_유효한_강의();
         wishList.add(lecture);
@@ -73,7 +85,7 @@ class WishListTest {
 
     @DisplayName("존재하지 않는 강의는 삭제할 수 없다")
     @Test
-    public void RemoveNonExistLecture() {
+    public void removeNonExistLecture() {
         //when
         ThrowableAssert.ThrowingCallable throwingException = () -> wishList.remove(LectureFixture.ID_유효한_강의());
 

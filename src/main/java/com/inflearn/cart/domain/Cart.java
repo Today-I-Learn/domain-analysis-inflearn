@@ -3,6 +3,7 @@ package com.inflearn.cart.domain;
 
 import com.inflearn.lecture.domain.Lecture;
 import lombok.*;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Cart {
+public class Cart extends AbstractAggregateRoot<Cart> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,11 +33,21 @@ public class Cart {
         }
 
         lectures.add(lecture);
+
+        registerEvent(new WishListInLectureRemovedEvent(lecture, memberId));
     }
 
     public void remove(Lecture lecture) {
         if (!lectures.contains(lecture)) {
             throw new IllegalArgumentException("수강 바구니에 존재하지 않는 강의입니다.");
+        }
+
+        lectures.remove(lecture);
+    }
+
+    public void removeByEvent(Lecture lecture) {
+        if (!lectures.contains(lecture)) {
+            return;
         }
 
         lectures.remove(lecture);
