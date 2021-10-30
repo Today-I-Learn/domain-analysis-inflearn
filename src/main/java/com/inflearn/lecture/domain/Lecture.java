@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Builder
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Lecture {
   // 강의 식별자, 제목, 가격, 카테고리, 난이도, Section -> Chapter, 태그, 소개, 지식공유자,
   @Id
@@ -47,6 +47,9 @@ public class Lecture {
 
   @ManyToMany
   private List<Tag> tags = new ArrayList<>();
+
+//  @ManyToOne
+//  private LectureDiscount lectureDiscount;
 
   public void approve() {
     if (this.approved == Approval.APPROVED) {
