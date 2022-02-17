@@ -11,6 +11,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 public class MemberCreateResponse {
+    private final Long id;
     private final Email email;
     private final Password password;
     private final MemberRole memberRole;

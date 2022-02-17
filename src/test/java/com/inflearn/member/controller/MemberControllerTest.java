@@ -40,7 +40,7 @@ public class MemberControllerTest {
 
         // given
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email, password);
-        MemberCreateResponse memberCreateResponse = new MemberCreateResponse(email, password, MemberRole.GUEST);
+        MemberCreateResponse memberCreateResponse = new MemberCreateResponse(1L, email, password, MemberRole.GUEST);
 
         given(memberService.create(any())).willReturn(memberCreateResponse);
 
@@ -53,7 +53,7 @@ public class MemberControllerTest {
         perform
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("memberRole").value(MemberRole.GUEST.name()))
-                .andExpect(jsonPath("email").value(email.getEmail()))
-                .andExpect(jsonPath("password").value(password.getPassword()));
+                .andExpect(jsonPath("email.email").value(email.getEmail()))
+                .andExpect(jsonPath("password.password").value(password.getPassword()));
     }
 }
