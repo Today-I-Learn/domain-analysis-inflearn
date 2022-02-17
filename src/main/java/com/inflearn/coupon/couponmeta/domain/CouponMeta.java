@@ -24,7 +24,7 @@ public class CouponMeta extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private CouponMetaType type;
+    private CouponMetaType couponMetaType;
 
     @Enumerated(EnumType.STRING)
     private CouponExpireType couponExpireType;
