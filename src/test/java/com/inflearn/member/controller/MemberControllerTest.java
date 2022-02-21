@@ -39,7 +39,7 @@ public class MemberControllerTest {
     void registerMember() throws Exception {
 
         // given
-        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email, password);
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getEmail(), password.getPassword());
         MemberCreateResponse memberCreateResponse = new MemberCreateResponse(1L, email, password, MemberRole.GUEST);
 
         given(memberService.create(any())).willReturn(memberCreateResponse);

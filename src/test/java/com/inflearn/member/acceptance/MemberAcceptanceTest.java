@@ -56,7 +56,7 @@ public class MemberAcceptanceTest {
     @DisplayName("신규 회원가입을 하면 게스트로 등록이 된다.")
     void registerMember() {
 
-        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email, password);
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getEmail(), password.getPassword());
 
         ExtractableResponse<Response> response = given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
