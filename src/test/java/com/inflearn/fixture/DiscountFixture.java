@@ -8,13 +8,14 @@ public class DiscountFixture {
     public static final Long ID = 1L;
     public static final String TITLE = "갓인프런할인";
     public static final int RATIO = 50;
-    public static final LocalDateTime START_TIME = LocalDateTime.of(2021, 10, 30, 15, 14);
-    public static final LocalDateTime END_TIME = LocalDateTime.of(2021, 10, 30, 22, 00);
+    public static final LocalDateTime START_TIME = LocalDateTime.now();
+    public static final LocalDateTime END_TIME = LocalDateTime.now().plusDays(100);
     public static final LocalDateTime LONG_TIME_AGO = LocalDateTime.MIN;
 
     public static Discount 할인() {
         return 할인(RATIO, END_TIME);
     }
+
     public static Discount 종료된_할인() {
         return 할인(RATIO, START_TIME);
     }
