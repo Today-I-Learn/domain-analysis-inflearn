@@ -14,14 +14,14 @@ public final class Email {
     // 참고: 이펙티브 자바 6장
     private static final Pattern pattern = Pattern.compile("^(.+)@(.+)$");
 
-    private String email;
+    private String value;
 
     protected Email() {
     }
 
     Email(String email) {
         verify(email);
-        this.email = email;
+        this.value = email;
     }
 
     public static Email of(String email) {
@@ -47,11 +47,11 @@ public final class Email {
             return false;
         }
         Email email1 = (Email) o;
-        return Objects.equals(email, email1.email);
+        return Objects.equals(value, email1.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(value);
     }
 }
