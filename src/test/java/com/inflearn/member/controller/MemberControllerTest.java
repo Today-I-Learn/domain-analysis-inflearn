@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inflearn.member.controller.MemberController;
 import com.inflearn.member.controller.MemberCreateRequest;
 import com.inflearn.member.controller.MemberCreateResponse;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import com.inflearn.member.domain.Email;
 import com.inflearn.member.domain.MemberRole;
 import com.inflearn.member.domain.Password;
 import com.inflearn.member.exception.DuplicatedEmailException;
+import com.inflearn.member.exception.MemberNotFoundException;
 import com.inflearn.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,5 +85,36 @@ public class MemberControllerTest {
         .andExpect(status().isConflict())
         .andExpect(jsonPath("message").value("중복된 이메일로 회원가입 할 수 없습니다."))
         .andExpect(jsonPath("statusCode").value(HttpStatus.CONFLICT.value()));
+  }
+
+  @Test
+  void 멤버조회는_id가_존재하지_않는다면_404를_리턴한다() throws Exception {
+    // given
+    Long id = 1000L;
+    given(memberService.read(id)).willThrow(new MemberNotFoundException("존재 하지 않는 : " + id));
+
+    // 실행
+    ResultActions perform = mockMvc.perform(get("/v1/members/" + 1000));
+
+    // 검증
+    perform.andExpect(status().isNotFound());
+  }
+
+  @Test
+  void 멤버조회는_id가_존재한다면_저장된_id와_200을_리턴한다() throws Exception {
+    // 준비
+    Long id = 1L;
+    given(memberService.read(id)).willReturn(new MemberCreateResponse(id, email, password, MemberRole.GUEST));
+
+    // 실행
+    ResultActions perform = mockMvc.perform(get("/v1/members" + id));
+
+    // 검증
+    perform
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("id").value(id))
+        .andExpect(jsonPath("email.value").value(email.getValue()))
+        .andExpect(jsonPath("password.password").value(password.getPassword()))
+        .andExpect(jsonPath("memberRole").value(MemberRole.GUEST.toString()));
   }
 }
