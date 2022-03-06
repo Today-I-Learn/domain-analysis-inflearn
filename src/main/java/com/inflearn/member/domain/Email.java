@@ -3,6 +3,7 @@ package com.inflearn.member.domain;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -14,6 +15,7 @@ public final class Email {
     // 참고: 이펙티브 자바 6장
     private static final Pattern pattern = Pattern.compile("^(.+)@(.+)$");
 
+    @Column(name = "email")
     private String value;
 
     protected Email() {

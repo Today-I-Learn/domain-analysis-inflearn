@@ -23,7 +23,7 @@ class MemberRepositoryTest {
         Member savedMember = memberRepository.save(new Member(email, password, MemberRole.GUEST));
 
         assertAll(
-                () -> assertThat(savedMember.getId()).isEqualTo(1L),
+                () -> assertThat(savedMember.getId()).isEqualTo(2L),
                 () -> assertThat(savedMember.getEmail()).isEqualTo(email),
                 () -> assertThat(savedMember.getPassword()).isEqualTo(password),
                 () -> assertThat(savedMember.getRole()).isEqualTo(MemberRole.GUEST)

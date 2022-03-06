@@ -1,9 +1,10 @@
-DROP TABLE IF EXISTS `Member`;
+DROP TABLE IF EXISTS member;
 
-CREATE TABLE Member
+create table member
 (
-    id BIGINT PRIMARY KEY,
-    email VARCHAR(255),
-    password VARCHAR(255),
-    role VARCHAR(50)
-);
+    id       bigint auto_increment,
+    email    varchar(255),
+    password varchar(255),
+    role     varchar(255),
+    primary key (id)
+)

@@ -3,11 +3,7 @@ package com.inflearn.member.controller;
 import com.inflearn.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -24,9 +20,15 @@ public class MemberController {
                              .body(memberCreateResponse);
     }
 
-    @GetMapping("v1/members{id}")
+    @GetMapping("/v1/members/{id}")
     public ResponseEntity<MemberCreateResponse> read(@PathVariable Long id) {
         MemberCreateResponse memberCreateResponse = memberService.read(id);
         return ResponseEntity.ok().body(memberCreateResponse);
+    }
+
+    @PutMapping("/v1/members/{id}")
+    public ResponseEntity<MemberUpdateResonse> update(@PathVariable Long id, @RequestBody MemberUpdateRequest request) {
+        MemberUpdateResonse response = memberService.update(id, request);
+        return ResponseEntity.ok().body(response);
     }
 }

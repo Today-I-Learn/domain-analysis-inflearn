@@ -2,10 +2,10 @@ package com.inflearn.member.acceptance;
 
 import com.inflearn.member.controller.MemberCreateRequest;
 import com.inflearn.member.controller.MemberCreateResponse;
+import com.inflearn.member.controller.MemberUpdateRequest;
 import com.inflearn.member.domain.Email;
 import com.inflearn.member.domain.MemberRole;
 import com.inflearn.member.domain.Password;
-import com.inflearn.member.exception.ErrorResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -42,61 +42,75 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MemberAcceptanceTest {
 
-  private static final Email email = Email.of("test@test.com");
-  private static final Password password = Password.of("1q2w3e4r#A");
+    private static final Email email = Email.of("test@test.com");
+    private static final Password password = Password.of("1q2w3e4r#A");
 
-  @LocalServerPort
-  int port;
+    @LocalServerPort
+    int port;
 
-  @BeforeEach
-  void setUp() {
-    RestAssured.port = port;
-  }
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+    }
 
-  @Test
-  @DisplayName("신규 회원가입을 하면 게스트로 등록이 된다.")
-  void registerMember() {
+    @Test
+    @DisplayName("신규 회원가입을 하면 게스트로 등록이 된다.")
+    void registerMember() {
 
-    MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
-        password.getPassword());
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
+                password.getValue());
 
-    ExtractableResponse<Response> response = given().log().all()
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .body(memberCreateRequest)
-        .when().post("/v1/members")
-        .then().log().all()
-        .extract();
+        ExtractableResponse<Response> response = given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(memberCreateRequest)
+                .when().post("/v1/members")
+                .then().log().all()
+                .extract();
 
-    MemberCreateResponse memberCreateResponse = response.as(MemberCreateResponse.class);
+        MemberCreateResponse memberCreateResponse = response.as(MemberCreateResponse.class);
 
-    assertAll(
-        () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
-        () -> assertThat(memberCreateResponse.getEmail()).isEqualTo(email),
-        () -> assertThat(memberCreateResponse.getPassword()).isEqualTo(password),
-        () -> assertThat(memberCreateResponse.getMemberRole()).isEqualTo(MemberRole.GUEST)
-    );
-  }
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(memberCreateResponse.getEmail()).isEqualTo(email),
+                () -> assertThat(memberCreateResponse.getPassword()).isEqualTo(password),
+                () -> assertThat(memberCreateResponse.getMemberRole()).isEqualTo(MemberRole.GUEST)
+        );
+    }
 
-  @Test
-  void 이미_등록된_이메일로는_회원가입할_수_없다() {
+    @Test
+    void 이미_등록된_이메일로는_회원가입할_수_없다() {
 
-    MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
-        password.getPassword());
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
+                password.getValue());
 
-    given().log().all()
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .body(memberCreateRequest)
-        .when().post("/v1/members")
-        .then().log().all()
-        .extract();
+        given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(memberCreateRequest)
+                .when().post("/v1/members")
+                .then().log().all()
+                .extract();
 
-    ExtractableResponse<Response> response = given().log().all()
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .body(memberCreateRequest)
-        .when().post("/v1/members")
-        .then().log().all()
-        .extract();
+        ExtractableResponse<Response> response = given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(memberCreateRequest)
+                .when().post("/v1/members")
+                .then().log().all()
+                .extract();
 
-    assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
-  }
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
+    }
+
+    @Test
+    void 유저_비밀번호_변경() {
+        MemberUpdateRequest memberPasswordUpdateRequest = new MemberUpdateRequest("1q2w3e4r#B");
+
+        ExtractableResponse<Response> response = given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(memberPasswordUpdateRequest)
+                .when().patch("/v1/members/1/pass")
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
 }

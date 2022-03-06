@@ -31,7 +31,7 @@ public class MemberServiceTest {
     @DisplayName("신규 회원가입을 하면 게스트로 등록이 된다.")
     void registerMember() {
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
-                                                                          password.getPassword());
+                                                                          password.getValue());
         Member member = new Member(1L, email, password, MemberRole.GUEST);
 
         given(memberRepository.save(any())).willReturn(member);
@@ -49,7 +49,7 @@ public class MemberServiceTest {
     @Test
     void 이미_등록된_이메일로는_회원가입할_수_없다() {
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest(email.getValue(),
-                                                                          password.getPassword());
+                                                                          password.getValue());
         Member member = new Member(1L, email, password, MemberRole.GUEST);
 
         given(memberRepository.existsByEmail(email)).willReturn(true);
